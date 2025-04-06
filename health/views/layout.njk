@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hospital Monitoring System</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Hospital Patient Monitoring</h1>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="/">Dashboard</a></li>
+        <li><a href="/logs">Activity Logs</a></li>
+        <li><a href="/add-patient" class="button primary small">Add New Patient</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <script src="/js/main.js"></script>
+</body>
+</html>

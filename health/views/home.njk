@@ -1,0 +1,33 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+  <div class="dashboard">
+    <div class="dashboard-header">
+      <h2>Hospital Overview</h2>
+      <a href="/add-patient" class="button primary">Add New Patient</a>
+    </div>
+    
+    <div class="stats">
+      <div class="stat-card">
+        <h3>Occupied Rooms</h3>
+        <p>{{ occupiedCount }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Vacant Rooms</h3>
+        <p>{{ vacantCount }}</p>
+      </div>
+    </div>
+    
+    <div class="room-grid">
+      {% for room in rooms %}
+        <a href="/room/{{ room.id }}" class="room-card {{ room.status }}">
+          <h3>Room {{ room.id }}</h3>
+          <p>{{ room.status|title }}</p>
+          {% if room.patient %}
+            <p>{{ room.patient }}</p>
+          {% endif %}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

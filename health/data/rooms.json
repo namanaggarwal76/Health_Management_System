@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "status": "occupied",
+    "patient": "pranav"
+  },
+  {
+    "id": 2,
+    "status": "vacant",
+    "patient": null
+  },
+  {
+    "id": 3,
+    "status": "vacant",
+    "patient": null
+  },
+  {
+    "id": 4,
+    "status": "vacant",
+    "patient": null
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "action": "add",
+    "patientName": "Michael Brown",
+    "roomId": "4",
+    "details": "Admitted with Pneumonia",
+    "timestamp": "2023-06-10T14:30:00.000Z"
+  },
+  {
+    "id": 2,
+    "action": "edit",
+    "patientName": "Michael Brown",
+    "roomId": "4",
+    "details": "Updated diagnosis information",
+    "timestamp": "2023-06-12T10:15:00.000Z"
+  },
+  {
+    "id": 3,
+    "action": "add",
+    "patientName": "tau ",
+    "roomId": "1",
+    "details": "Admitted with ghutna",
+    "timestamp": "2025-04-06T18:36:09.534Z"
+  },
+  {
+    "id": 4,
+    "action": "discharge",
+    "patientName": "tau ",
+    "roomId": "1",
+    "details": "Patient discharged. Reason: deceased",
+    "timestamp": "2025-04-06T18:36:30.166Z"
+  },
+  {
+    "id": 5,
+    "action": "discharge",
+    "patientName": null,
+    "roomId": "3",
+    "details": "Patient discharged. Reason: transferred",
+    "timestamp": "2025-04-06T18:42:46.914Z"
+  },
+  {
+    "id": 6,
+    "action": "add",
+    "patientName": "pranav",
+    "roomId": "1",
+    "details": "Admitted with abc",
+    "timestamp": "2025-04-06T19:07:53.303Z"
+  },
+  {
+    "id": 7,
+    "action": "discharge",
+    "patientName": "Michael Brown",
+    "roomId": "4",
+    "details": "Patient discharged. Reason: deceased",
+    "timestamp": "2025-04-06T19:08:10.999Z"
+  }
+]
