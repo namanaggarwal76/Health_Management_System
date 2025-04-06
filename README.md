@@ -15,8 +15,8 @@ This is an IoT-based hospital monitoring system that tracks patient data, room s
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/hospital-monitoring.git
-   cd hospital-monitoring
+   git clone https://github.com/namanaggarwal76/Health_Management_System.git
+   cd health
    ```
 
 2. Install dependencies:
