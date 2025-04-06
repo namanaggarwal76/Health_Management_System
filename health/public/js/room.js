@@ -24,27 +24,38 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
     
-    // WebSocket or polling for real-time data
+    // Function to fetch and display vital signs data
     function fetchData() {
       fetch(`/api/room/${roomId}`)
         .then(response => response.json())
         .then(data => {
-          heartRateEl.textContent = data.heartRate.toFixed(0);
-          spo2El.textContent = data.spo2.toFixed(0);
-          temperatureEl.textContent = data.temperature.toFixed(1);
-          
-          // Update chart
-          const time = new Date(data.timestamp).toLocaleTimeString();
-          chart.data.labels.push(time);
-          if (chart.data.labels.length > 15) {
-            chart.data.labels.shift();
-            chart.data.datasets.forEach(dataset => dataset.data.shift());
+          // Update current vital sign display with the latest reading
+          if (data.currentVitals) {
+            heartRateEl.textContent = data.currentVitals.heartRate.toFixed(0);
+            spo2El.textContent = data.currentVitals.spo2.toFixed(0);
+            temperatureEl.textContent = data.currentVitals.temperature.toFixed(1);
           }
           
-          chart.data.datasets[0].data.push(data.heartRate);
-          chart.data.datasets[1].data.push(data.spo2);
-          chart.data.datasets[2].data.push(data.temperature);
-          chart.update();
+          // Clear existing chart data
+          chart.data.labels = [];
+          chart.data.datasets[0].data = [];
+          chart.data.datasets[1].data = [];
+          chart.data.datasets[2].data = [];
+          
+          // Update chart with all historical data
+          if (data.historicalData && data.historicalData.length > 0) {
+            data.historicalData.forEach(vital => {
+              const time = new Date(vital.timestamp).toLocaleTimeString();
+              chart.data.labels.push(time);
+              chart.data.datasets[0].data.push(vital.heartRate);
+              chart.data.datasets[1].data.push(vital.spo2);
+              chart.data.datasets[2].data.push(vital.temperature);
+            });
+            chart.update();
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching vital data:', error);
         });
     }
     

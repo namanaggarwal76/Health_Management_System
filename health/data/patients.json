@@ -6,8 +6,7 @@
     "diagnosis": "abc",
     "medicines": [
       "a",
-      "b",
-      "c"
+      "b"
     ]
   }
 }

@@ -9,13 +9,23 @@ router.get('/room/:id', async (req, res) => {
     const vitalsPath = path.join(__dirname, '../data/vitals.json');
     const vitalsData = fs.readFileSync(vitalsPath, 'utf8');
     const vitals = JSON.parse(vitalsData);
-    const roomData = vitals[req.params.id];
+    const roomId = req.params.id;
     
-    if (!roomData) {
+    // If room doesn't exist in vitals
+    if (!vitals[roomId]) {
       return res.status(404).json({error: "Room data not found"});
     }
     
-    res.json(roomData);
+    // Get all vitals data for this room
+    const roomVitals = vitals[roomId];
+    
+    // Create response with all historical data
+    const response = {
+      currentVitals: getLatestVitals(roomVitals),
+      historicalData: getAllVitalsOrdered(roomVitals)
+    };
+    
+    res.json(response);
   } catch (error) {
     console.error('Error fetching room data:', error);
     res.status(500).json({error: "Failed to fetch data"});
@@ -32,11 +42,19 @@ router.post('/room/:id', express.json(), (req, res) => {
     const vitalsData = fs.readFileSync(vitalsPath, 'utf8');
     const vitals = JSON.parse(vitalsData);
     
-    // Update with new data
-    vitals[roomId] = {
+    // Initialize room if it doesn't exist
+    if (!vitals[roomId]) {
+      vitals[roomId] = {};
+    }
+    
+    // Create new vitals data with timestamp
+    const newVitalsData = {
       ...req.body,
       timestamp: new Date().toISOString()
     };
+    
+    // Handle the rotation of vitals data (maintain maximum 5 readings)
+    rotateVitalsData(vitals[roomId], roomId, newVitalsData);
     
     // Write back to file
     fs.writeFileSync(vitalsPath, JSON.stringify(vitals, null, 2));
@@ -47,5 +65,64 @@ router.post('/room/:id', express.json(), (req, res) => {
     res.status(500).json({error: "Failed to update data"});
   }
 });
+
+// Helper function to get the latest vitals for a room
+function getLatestVitals(roomVitals) {
+  // Find the entry with the highest sequence number (e.g., roomId_5)
+  const keys = Object.keys(roomVitals);
+  if (keys.length === 0) return null;
+  
+  // Sort keys by the sequence number
+  keys.sort((a, b) => {
+    const seqA = parseInt(a.split('_')[1]);
+    const seqB = parseInt(b.split('_')[1]);
+    return seqB - seqA; // Descending order
+  });
+  
+  return roomVitals[keys[0]];
+}
+
+// Helper function to rotate vitals data, maintaining at most 5 entries
+function rotateVitalsData(roomVitals, roomId, newData) {
+  // Get all existing keys and their sequence numbers
+  let entries = Object.keys(roomVitals).map(key => {
+    const seqNum = parseInt(key.split('_')[1]);
+    return { key, seqNum };
+  });
+  
+  // Sort by sequence number (ascending)
+  entries.sort((a, b) => a.seqNum - b.seqNum);
+  
+  // If we already have 5 entries, remove the oldest
+  if (entries.length >= 5) {
+    delete roomVitals[entries[0].key]; // Remove the oldest entry
+    entries.shift(); // Remove from our array too
+  }
+  
+  // Shift all remaining entries down by 1
+  for (let i = 0; i < entries.length; i++) {
+    const oldKey = entries[i].key;
+    const newKey = `${roomId}_${i+1}`;
+    
+    if (oldKey !== newKey) {
+      roomVitals[newKey] = roomVitals[oldKey];
+      delete roomVitals[oldKey];
+    }
+  }
+  
+  // Add the new entry with the next sequence number
+  const newSeqNum = entries.length + 1;
+  roomVitals[`${roomId}_${newSeqNum}`] = newData;
+}
+
+// Helper function to get all vitals ordered by timestamp
+function getAllVitalsOrdered(roomVitals) {
+  const vitalsArray = Object.values(roomVitals);
+  
+  // Sort by timestamp (oldest first)
+  vitalsArray.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+  
+  return vitalsArray;
+}
 
 module.exports = router;

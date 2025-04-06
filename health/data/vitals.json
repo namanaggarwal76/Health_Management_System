@@ -1,26 +1,52 @@
 {
   "1": {
-    "heartRate": 72,
-    "spo2": 98,
-    "temperature": 36.8,
-    "timestamp": "2023-06-15T10:30:00.000Z"
+    "1_1": {
+      "heartRate": 70,
+      "spo2": 96,
+      "temperature": 36.5,
+      "timestamp": "2023-06-15T10:10:00.000Z"
+    },
+    "1_2": {
+      "heartRate": 71,
+      "spo2": 97,
+      "temperature": 36.6,
+      "timestamp": "2023-06-15T10:20:00.000Z"
+    },
+    "1_3": {
+      "heartRate": 72,
+      "spo2": 98,
+      "temperature": 36.8,
+      "timestamp": "2023-06-15T10:30:00.000Z"
+    }
   },
   "2": {
-    "heartRate": 70,
-    "spo2": 98,
-    "temperature": 36.7,
-    "timestamp": "2025-04-06T18:17:17.605Z"
+    "2_1": {
+      "heartRate": 68,
+      "spo2": 95,
+      "temperature": 36.5,
+      "timestamp": "2023-06-15T10:15:00.000Z"
+    },
+    "2_2": {
+      "heartRate": 70,
+      "spo2": 98,
+      "temperature": 36.7,
+      "timestamp": "2025-04-06T18:17:17.605Z"
+    }
   },
   "3": {
-    "heartRate": 68,
-    "spo2": 96,
-    "temperature": 37.1,
-    "timestamp": "2023-06-15T10:30:00.000Z"
+    "3_1": {
+      "heartRate": 68,
+      "spo2": 96,
+      "temperature": 37.1,
+      "timestamp": "2023-06-15T10:30:00.000Z"
+    }
   },
   "4": {
-    "heartRate": 88,
-    "spo2": 94,
-    "temperature": 38.2,
-    "timestamp": "2023-06-15T10:30:00.000Z"
+    "4_1": {
+      "heartRate": 88,
+      "spo2": 94,
+      "temperature": 38.2,
+      "timestamp": "2023-06-15T10:30:00.000Z"
+    }
   }
 }

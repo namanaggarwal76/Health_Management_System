@@ -166,7 +166,9 @@ router.post('/add-patient', express.urlencoded({ extended: true }), (req, res) =
     const vitals = JSON.parse(vitalsData);
     
     if (!vitals[roomId]) {
-      vitals[roomId] = {
+      vitals[roomId] = {};
+      // Initialize with first entry
+      vitals[roomId][`${roomId}_1`] = {
         heartRate: 70,
         spo2: 98,
         temperature: 36.7,

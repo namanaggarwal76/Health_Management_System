@@ -54,5 +54,13 @@
     "roomId": "4",
     "details": "Patient discharged. Reason: deceased",
     "timestamp": "2025-04-06T19:08:10.999Z"
+  },
+  {
+    "id": 8,
+    "action": "edit",
+    "patientName": "pranav",
+    "roomId": "1",
+    "details": "Patient details updated",
+    "timestamp": "2025-04-06T20:19:56.180Z"
   }
 ]
