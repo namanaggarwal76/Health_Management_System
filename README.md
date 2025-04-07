@@ -40,6 +40,14 @@ To start the server in development mode with live reload:
 npm run dev
 ```
 
+## Vital Signs Simulation
+To simulate real-time vital signs for testing:
+```bash
+node utils/simulate-vitals.js
+```
+
+This script generates realistic vital sign data (heart rate, SpO2, temperature) for all occupied rooms every 5 seconds. The simulation runs continuously until stopped with Ctrl+C.
+
 ## Project Structure
 ```
 hospital_monitoring/

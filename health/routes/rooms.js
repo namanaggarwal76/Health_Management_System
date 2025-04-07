@@ -77,6 +77,19 @@ function addLogEntry(action, patientName, roomId, details) {
   fs.writeFileSync(logsPath, JSON.stringify(logs, null, 2));
 }
 
+// Get vitals data from JSON file
+function getVitals() {
+  const vitalsPath = path.join(__dirname, '../data/vitals.json');
+  const vitalsData = fs.readFileSync(vitalsPath, 'utf8');
+  return JSON.parse(vitalsData);
+}
+
+// Write vitals data to JSON file
+function writeVitals(vitals) {
+  const vitalsPath = path.join(__dirname, '../data/vitals.json');
+  fs.writeFileSync(vitalsPath, JSON.stringify(vitals, null, 2));
+}
+
 // Home page
 router.get('/', (req, res) => {
   const rooms = getRooms();
@@ -241,6 +254,7 @@ router.post('/room/:id/discharge', express.urlencoded({ extended: true }), (req,
     // Get existing data
     const rooms = getRooms();
     const patients = getAllPatients();
+    const vitals = getVitals();
     
     // Check if room exists
     const roomIndex = rooms.findIndex(r => r.id == roomId);
@@ -261,9 +275,15 @@ router.post('/room/:id/discharge', express.urlencoded({ extended: true }), (req,
     // Remove patient data
     delete patients[roomId];
     
+    // Remove vitals data for the room
+    if (vitals[roomId]) {
+      delete vitals[roomId];
+    }
+    
     // Save data
     writeRooms(rooms);
     writePatients(patients);
+    writeVitals(vitals);
     
     res.redirect('/');
   } catch (error) {

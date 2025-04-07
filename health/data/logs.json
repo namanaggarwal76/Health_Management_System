@@ -62,5 +62,45 @@
     "roomId": "1",
     "details": "Patient details updated",
     "timestamp": "2025-04-06T20:19:56.180Z"
+  },
+  {
+    "id": 9,
+    "action": "add",
+    "patientName": "vital_test",
+    "roomId": "4",
+    "details": "Admitted with qw",
+    "timestamp": "2025-04-07T05:34:20.508Z"
+  },
+  {
+    "id": 10,
+    "action": "add",
+    "patientName": "vital_test_2",
+    "roomId": "6",
+    "details": "Admitted with baba",
+    "timestamp": "2025-04-07T05:41:15.929Z"
+  },
+  {
+    "id": 11,
+    "action": "discharge",
+    "patientName": "vital_test_2",
+    "roomId": "6",
+    "details": "Patient discharged. Reason: cured",
+    "timestamp": "2025-04-07T05:45:21.331Z"
+  },
+  {
+    "id": 12,
+    "action": "add",
+    "patientName": "12345",
+    "roomId": "3",
+    "details": "Admitted with f",
+    "timestamp": "2025-04-07T05:47:24.888Z"
+  },
+  {
+    "id": 13,
+    "action": "edit",
+    "patientName": "helo",
+    "roomId": "3",
+    "details": "Patient details updated",
+    "timestamp": "2025-04-07T05:48:03.925Z"
   }
 ]

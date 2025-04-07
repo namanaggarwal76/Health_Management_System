@@ -7,28 +7,48 @@ const path = require('path');
 router.get('/room/:id', async (req, res) => {
   try {
     const vitalsPath = path.join(__dirname, '../data/vitals.json');
+    console.log(`Reading vitals data from: ${vitalsPath}`);
+    
     const vitalsData = fs.readFileSync(vitalsPath, 'utf8');
-    const vitals = JSON.parse(vitalsData);
+    
+    // Make sure we can parse the JSON
+    let vitals;
+    try {
+      vitals = JSON.parse(vitalsData);
+    } catch (parseError) {
+      console.error('Error parsing vitals JSON:', parseError);
+      return res.status(500).json({
+        error: "Invalid JSON in vitals data file",
+        details: parseError.message
+      });
+    }
+    
     const roomId = req.params.id;
+    console.log(`Request for vitals in room: ${roomId}`);
     
     // If room doesn't exist in vitals
     if (!vitals[roomId]) {
+      console.log(`No vitals data found for room ${roomId}`);
       return res.status(404).json({error: "Room data not found"});
     }
     
     // Get all vitals data for this room
     const roomVitals = vitals[roomId];
+    console.log(`Found ${Object.keys(roomVitals).length} vitals entries for room ${roomId}`);
+    
+    const latestVitals = getLatestVitals(roomVitals);
+    const historicalData = getAllVitalsOrdered(roomVitals);
     
     // Create response with all historical data
     const response = {
-      currentVitals: getLatestVitals(roomVitals),
-      historicalData: getAllVitalsOrdered(roomVitals)
+      currentVitals: latestVitals,
+      historicalData: historicalData
     };
     
     res.json(response);
   } catch (error) {
     console.error('Error fetching room data:', error);
-    res.status(500).json({error: "Failed to fetch data"});
+    res.status(500).json({error: "Failed to fetch data", details: error.message});
   }
 });
 
@@ -79,6 +99,7 @@ function getLatestVitals(roomVitals) {
     return seqB - seqA; // Descending order
   });
   
+  console.log(`Latest vitals key: ${keys[0]}`);
   return roomVitals[keys[0]];
 }
 

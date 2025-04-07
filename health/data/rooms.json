@@ -11,13 +11,13 @@
   },
   {
     "id": 3,
-    "status": "vacant",
-    "patient": null
+    "status": "occupied",
+    "patient": "helo"
   },
   {
     "id": 4,
-    "status": "vacant",
-    "patient": null
+    "status": "occupied",
+    "patient": "vital_test"
   },
   {
     "id": 5,
