@@ -113,6 +113,7 @@ router.get('/room/:id', (req, res) => {
   
   const patientInfo = getPatient(req.params.id) || {
     name: "Unknown",
+    gender: "Unknown",
     age: 0,
     admissionDate: "Unknown",
     diagnosis: "Unknown",
@@ -124,6 +125,7 @@ router.get('/room/:id', (req, res) => {
     medicines: patientInfo.medicines || [],
     patientInfo: {
       name: patientInfo.name,
+      gender: patientInfo.gender,
       age: patientInfo.age,
       admissionDate: patientInfo.admissionDate,
       diagnosis: patientInfo.diagnosis
@@ -141,7 +143,7 @@ router.get('/add-patient', (req, res) => {
 // Add patient submission
 router.post('/add-patient', express.urlencoded({ extended: true }), (req, res) => {
   try {
-    const { name, age, admissionDate, diagnosis, medicines, roomId } = req.body;
+    const { name, age, gender, admissionDate, diagnosis, medicines, roomId } = req.body;
     
     // Get existing data
     const rooms = getRooms();
@@ -161,6 +163,7 @@ router.post('/add-patient', express.urlencoded({ extended: true }), (req, res) =
     patients[roomId] = {
       name,
       age: parseInt(age),
+      gender,
       admissionDate,
       diagnosis,
       medicines: medicines ? medicines.split(',').map(med => med.trim()) : []
@@ -201,7 +204,7 @@ router.post('/add-patient', express.urlencoded({ extended: true }), (req, res) =
 router.post('/room/:id/update', express.urlencoded({ extended: true }), (req, res) => {
   try {
     const roomId = req.params.id;
-    const { name, age, admissionDate, diagnosis, medicines } = req.body;
+    const { name, age, gender, admissionDate, diagnosis, medicines } = req.body;
     
     // Get existing data
     const rooms = getRooms();
@@ -227,6 +230,7 @@ router.post('/room/:id/update', express.urlencoded({ extended: true }), (req, re
     patients[roomId] = {
       name,
       age: parseInt(age),
+      gender,
       admissionDate,
       diagnosis,
       medicines: medicines ? medicines.split(',').map(med => med.trim()) : []

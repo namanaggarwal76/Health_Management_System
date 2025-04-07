@@ -58,6 +58,3 @@ hospital_monitoring/
 ├── server.js       # Main server file
 ├── package.json    # Project metadata and dependencies
 ```
-
-## License
-This project is licensed under the MIT License.

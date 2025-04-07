@@ -219,6 +219,12 @@
     margin: 0;
   }
 
+  .card-header div {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+  }
+
   /* Modal styles */
   .modal {
     display: none;
