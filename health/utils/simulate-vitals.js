@@ -2,20 +2,16 @@
  * Utility script to simulate vitals data updates for all occupied rooms
  * Run with: node utils/simulate-vitals.js
  */
-
 const fs = require('fs');
 const path = require('path');
 
-// Get vitals data path
 const vitalsPath = path.join(__dirname, '../data/vitals.json');
 const roomsPath = path.join(__dirname, '../data/rooms.json');
 
-// Function to get current room data
 function getOccupiedRooms() {
   try {
     const roomsData = fs.readFileSync(roomsPath, 'utf8');
     const rooms = JSON.parse(roomsData);
-    // Filter occupied rooms
     return rooms.filter(room => room.status === 'occupied');
   } catch (err) {
     console.error('Error reading rooms data:', err);
@@ -23,110 +19,97 @@ function getOccupiedRooms() {
   }
 }
 
-// Read the current vitals data
 function getVitalsData() {
   try {
     const vitalsData = fs.readFileSync(vitalsPath, 'utf8');
     return JSON.parse(vitalsData);
   } catch (err) {
     console.error('Error parsing vitals JSON. Fixing...');
-    // Try to fix by removing comments if any
-    try {
-      const cleanData = vitalsData.replace(/\/\/.*$/gm, '').trim();
-      const vitals = JSON.parse(cleanData);
-      // Save the fixed data
-      fs.writeFileSync(vitalsPath, JSON.stringify(vitals, null, 2));
-      console.log('Fixed and saved clean JSON data.');
-      return vitals;
-    } catch (fixErr) {
-      console.error('Could not fix vitals data:', fixErr);
-      return {};
-    }
+    return {};
   }
 }
 
-// Generate random vital within range
 function randomVital(base, variance) {
   return base + (Math.random() * variance * 2 - variance);
 }
 
-// Function to update vitals for a specific room
 function updateVitalsForRoom(roomId) {
   let vitals = getVitalsData();
   
+  // Initialize new structure if missing
   if (!vitals[roomId]) {
-    vitals[roomId] = {};
+    vitals[roomId] = { temp: {}, spo2: {}, heartRate: {} };
+    // Initial baseline values.
+    vitals[roomId].temp["1"] = 36.7;
+    vitals[roomId].spo2["1"] = 98;
+    vitals[roomId].heartRate["1"] = 80;
   }
-
-  // Count existing entries for this room
-  const entries = Object.keys(vitals[roomId]);
-  const nextSeq = entries.length + 1;
   
-  // If we have 5 entries already, rotate them
-  if (entries.length >= 5) {
-    for (let i = 1; i < 5; i++) {
-      vitals[roomId][`${roomId}_${i}`] = vitals[roomId][`${roomId}_${i+1}`];
+  const roomVitals = vitals[roomId];
+  const currentCount = Object.keys(roomVitals.temp).length;
+  const latestKey = currentCount.toString();
+  let baseReading = {
+    spo2: roomVitals.spo2[latestKey] || 98,
+    temp: roomVitals.temp[latestKey] || 36.7, // Changed from temperature to temp
+    heartRate: roomVitals.heartRate[latestKey] || 80
+  };
+
+  const newVitalsData = {
+    spo2: Math.max(92, Math.min(100, randomVital(baseReading.spo2, 1))),
+    temp: Math.max(36.0, Math.min(38.0, randomVital(baseReading.temp, 0.1))), // Changed from temperature to temp
+    heartRate: Math.max(60, Math.min(100, randomVital(baseReading.heartRate, 5)))
+  };
+  
+  if (currentCount >= 5) {
+    delete roomVitals.temp["1"];
+    delete roomVitals.spo2["1"];
+    delete roomVitals.heartRate["1"];
+    
+    for (let i = 2; i <= currentCount; i++) {
+      roomVitals.temp[(i - 1).toString()] = roomVitals.temp[i.toString()];
+      roomVitals.spo2[(i - 1).toString()] = roomVitals.spo2[i.toString()];
+      roomVitals.heartRate[(i - 1).toString()] = roomVitals.heartRate[i.toString()];
     }
     
-    // Generate new values based on the latest values
-    const latestKey = `${roomId}_5`;
-    const latest = vitals[roomId][latestKey];
+    delete roomVitals.temp[currentCount.toString()];
+    delete roomVitals.spo2[currentCount.toString()];
+    delete roomVitals.heartRate[currentCount.toString()];
     
-    const newVitals = {
-      heartRate: Math.max(60, Math.min(100, randomVital(latest.heartRate, 2))),
-      spo2: Math.max(92, Math.min(100, randomVital(latest.spo2, 1))),
-      temperature: Math.max(36.0, Math.min(38.0, randomVital(latest.temperature, 0.1))),
-      timestamp: new Date().toISOString()
-    };
-    
-    vitals[roomId][latestKey] = newVitals;
+    roomVitals.temp[currentCount.toString()] = newVitalsData.temp; // Changed from temperature to temp
+    roomVitals.spo2[currentCount.toString()] = newVitalsData.spo2;
+    roomVitals.heartRate[currentCount.toString()] = newVitalsData.heartRate;
   } else {
-    // Add new entry
-    const newVitals = {
-      heartRate: randomVital(75, 5),
-      spo2: randomVital(97, 2),
-      temperature: randomVital(36.8, 0.3),
-      timestamp: new Date().toISOString()
-    };
-    
-    vitals[roomId][`${roomId}_${nextSeq}`] = newVitals;
+    const newIndex = (currentCount + 1).toString();
+    roomVitals.temp[newIndex] = newVitalsData.temp; // Changed from temperature to temp
+    roomVitals.spo2[newIndex] = newVitalsData.spo2;
+    roomVitals.heartRate[newIndex] = newVitalsData.heartRate;
   }
   
-  // Save updated data
   fs.writeFileSync(vitalsPath, JSON.stringify(vitals, null, 2));
   console.log(`Updated vitals for Room ${roomId} at ${new Date().toLocaleTimeString()}`);
 }
 
-// Function to update all occupied rooms
 function updateAllOccupiedRooms() {
-  // Get current occupied rooms (re-read every time to detect changes)
   const occupiedRooms = getOccupiedRooms();
-  
   if (occupiedRooms.length === 0) {
     console.log('No occupied rooms found at this time.');
     return;
   }
   
   console.log(`Updating vitals for ${occupiedRooms.length} occupied rooms`);
-  
   occupiedRooms.forEach(room => {
     updateVitalsForRoom(room.id.toString());
   });
-  
   console.log(`Updated vitals for all rooms at ${new Date().toLocaleTimeString()}`);
 }
 
-// Update once immediately
 updateAllOccupiedRooms();
-
-// Then update every 5 seconds - run continuously without a timeout
 const intervalId = setInterval(updateAllOccupiedRooms, 5000);
-
 console.log('Simulation running continuously. Press Ctrl+C to stop.');
 
-// Handle clean shutdown
 process.on('SIGINT', () => {
   clearInterval(intervalId);
   console.log('Simulation stopped.');
   process.exit(0);
 });
+

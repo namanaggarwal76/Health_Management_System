@@ -176,19 +176,16 @@ router.post('/add-patient', express.urlencoded({ extended: true }), (req, res) =
     // Log the action
     addLogEntry('add', name, roomId, `Admitted with ${diagnosis}`);
     
-    // Create empty vital signs if they don't exist
+    // Initialize vitals for this room using the new format (no timestamps, with heartRate)
     const vitalsPath = path.join(__dirname, '../data/vitals.json');
     const vitalsData = fs.readFileSync(vitalsPath, 'utf8');
     const vitals = JSON.parse(vitalsData);
     
     if (!vitals[roomId]) {
-      vitals[roomId] = {};
-      // Initialize with first entry
-      vitals[roomId][`${roomId}_1`] = {
-        heartRate: 70,
-        spo2: 98,
-        temperature: 36.7,
-        timestamp: new Date().toISOString()
+      vitals[roomId] = {
+        temp: { "1": 36.7 },
+        spo2: { "1": 98 },
+        heartRate: { "1": 80 }
       };
       fs.writeFileSync(vitalsPath, JSON.stringify(vitals, null, 2));
     }

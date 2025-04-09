@@ -134,5 +134,45 @@
     "roomId": "4",
     "details": "Patient discharged. Reason: cured",
     "timestamp": "2025-04-07T06:48:49.039Z"
+  },
+  {
+    "id": 18,
+    "action": "add",
+    "patientName": "helo",
+    "roomId": "1",
+    "details": "Admitted with q",
+    "timestamp": "2025-04-09T18:53:54.828Z"
+  },
+  {
+    "id": 19,
+    "action": "discharge",
+    "patientName": "helo",
+    "roomId": "1",
+    "details": "Patient discharged. Reason: cured",
+    "timestamp": "2025-04-09T19:14:14.804Z"
+  },
+  {
+    "id": 20,
+    "action": "add",
+    "patientName": "qwerty",
+    "roomId": "1",
+    "details": "Admitted with abc",
+    "timestamp": "2025-04-09T19:15:52.201Z"
+  },
+  {
+    "id": 21,
+    "action": "add",
+    "patientName": "hehe",
+    "roomId": "3",
+    "details": "Admitted with abc",
+    "timestamp": "2025-04-09T19:36:23.853Z"
+  },
+  {
+    "id": 22,
+    "action": "discharge",
+    "patientName": "hehe",
+    "roomId": "3",
+    "details": "Patient discharged. Reason: deceased",
+    "timestamp": "2025-04-09T19:37:48.286Z"
   }
 ]

@@ -1,1 +1,15 @@
-{}
+{
+  "1": {
+    "name": "qwerty",
+    "age": 12,
+    "gender": "male",
+    "admissionDate": "2025-04-10",
+    "diagnosis": "abc",
+    "medicines": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ]
+  }
+}

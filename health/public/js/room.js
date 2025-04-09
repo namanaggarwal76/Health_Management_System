@@ -4,13 +4,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const spo2El = document.getElementById('spo2');
     const temperatureEl = document.getElementById('temperature');
     
-    // Check if Chart is available
     if (typeof Chart === 'undefined') {
         console.error('Chart.js not loaded! Please check your script includes.');
         return;
     }
     
-    // Chart setup for heart rate
+    // Chart setup for Heart Rate
     const heartRateCtx = document.getElementById('heartRateChart').getContext('2d');
     const heartRateChart = new Chart(heartRateCtx, {
       type: 'line',
@@ -32,15 +31,10 @@ document.addEventListener('DOMContentLoaded', function() {
         scales: {
           y: { 
             beginAtZero: false,
-            title: {
-              display: true,
-              text: 'BPM'
-            }
+            title: { display: true, text: 'bpm' }
           }
         },
-        animation: {
-          duration: 500
-        }
+        animation: { duration: 500 }
       }
     });
     
@@ -68,19 +62,14 @@ document.addEventListener('DOMContentLoaded', function() {
             beginAtZero: false,
             min: 90,
             max: 100,
-            title: {
-              display: true,
-              text: '%'
-            }
+            title: { display: true, text: '%' }
           }
         },
-        animation: {
-          duration: 500
-        }
+        animation: { duration: 500 }
       }
     });
     
-    // Chart setup for temperature
+    // Chart setup for Temperature
     const tempCtx = document.getElementById('temperatureChart').getContext('2d');
     const tempChart = new Chart(tempCtx, {
       type: 'line',
@@ -102,43 +91,29 @@ document.addEventListener('DOMContentLoaded', function() {
         scales: {
           y: { 
             beginAtZero: false,
-            title: {
-              display: true,
-              text: '°C'
-            }
+            title: { display: true, text: '°C' }
           }
         },
-        animation: {
-          duration: 500
-        }
+        animation: { duration: 500 }
       }
     });
     
-    // Function to fetch and display vital signs data
     function fetchData() {
       console.log(`Fetching data for room ${roomId}...`);
-      
       fetch(`/api/room/${roomId}`)
         .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
+          if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
           return response.json();
         })
         .then(data => {
           console.log('Received vital data:', data);
-          
-          // Update current vital sign display with the latest reading
           if (data.currentVitals) {
             heartRateEl.textContent = data.currentVitals.heartRate.toFixed(0);
             spo2El.textContent = data.currentVitals.spo2.toFixed(0);
             temperatureEl.textContent = data.currentVitals.temperature.toFixed(1);
-            
-            // Add visual indicator for updates
             heartRateEl.classList.add('updated');
             spo2El.classList.add('updated');
             temperatureEl.classList.add('updated');
-            
             setTimeout(() => {
               heartRateEl.classList.remove('updated');
               spo2El.classList.remove('updated');
@@ -148,34 +123,25 @@ document.addEventListener('DOMContentLoaded', function() {
             console.warn('No current vitals data received');
           }
           
-          // Clear existing chart data
+          // Reset charts data
           heartRateChart.data.labels = [];
           heartRateChart.data.datasets[0].data = [];
-          
           spo2Chart.data.labels = [];
           spo2Chart.data.datasets[0].data = [];
-          
           tempChart.data.labels = [];
           tempChart.data.datasets[0].data = [];
           
-          // Update charts with historical data
           if (data.historicalData && data.historicalData.length > 0) {
-            data.historicalData.forEach(vital => {
-              const time = new Date(vital.timestamp).toLocaleTimeString();
-              
-              // Update Heart Rate chart
-              heartRateChart.data.labels.push(time);
+            data.historicalData.forEach((vital, index) => {
+              // Use sequential labels since no timestamp is provided
+              const label = `#${index + 1}`;
+              heartRateChart.data.labels.push(label);
               heartRateChart.data.datasets[0].data.push(vital.heartRate);
-              
-              // Update SpO2 chart
-              spo2Chart.data.labels.push(time);
+              spo2Chart.data.labels.push(label);
               spo2Chart.data.datasets[0].data.push(vital.spo2);
-              
-              // Update Temperature chart
-              tempChart.data.labels.push(time);
+              tempChart.data.labels.push(label);
               tempChart.data.datasets[0].data.push(vital.temperature);
             });
-            
             heartRateChart.update();
             spo2Chart.update();
             tempChart.update();
@@ -191,7 +157,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Fetch data every 5 seconds
     fetchData();
     setInterval(fetchData, 5000);
 });
