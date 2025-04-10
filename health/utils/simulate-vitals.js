@@ -36,13 +36,9 @@ function randomVital(base, variance) {
 function updateVitalsForRoom(roomId) {
   let vitals = getVitalsData();
   
-  // Initialize new structure if missing
+  // Initialize new structure if missing without base values.
   if (!vitals[roomId]) {
     vitals[roomId] = { temp: {}, spo2: {}, heartRate: {} };
-    // Initial baseline values.
-    vitals[roomId].temp["1"] = 36.7;
-    vitals[roomId].spo2["1"] = 98;
-    vitals[roomId].heartRate["1"] = 80;
   }
   
   const roomVitals = vitals[roomId];

@@ -1,5 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const roomId = window.location.pathname.split('/')[2];
+    // Adjust roomId extraction for client routes (e.g., /client/room/:id)
+    const segments = window.location.pathname.split('/');
+    let roomId;
+    if (segments[1] === 'client') {
+      roomId = segments[3];
+    } else {
+      roomId = segments[2];
+    }
+    
     const heartRateEl = document.getElementById('heartRate');
     const spo2El = document.getElementById('spo2');
     const temperatureEl = document.getElementById('temperature');

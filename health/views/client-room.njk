@@ -1,0 +1,74 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+  <div class="room-detail">
+    <div class="patient-info">
+      <h2>Room {{ room.id }} - {{ room.status|title }}</h2>      
+      <div style="margin-top: 1rem;">
+        <a href="/client/change-password?room_no={{ room.id }}" class="button secondary small">Change Password</a>
+      </div>
+      
+      <div class="info-card">
+        <div class="card-header">
+          <h3>Patient Information</h3>
+          {# No edit/discharge buttons for client view #}
+        </div>
+        
+        <div id="patientDisplay">
+          <p><strong>Name:</strong> {{ patientInfo.name }}</p>
+          <p><strong>Gender:</strong> {{ patientInfo.gender|title }}</p>
+          <p><strong>Age:</strong> {{ patientInfo.age }}</p>
+          <p><strong>Admission Date:</strong> {{ patientInfo.admissionDate }}</p>
+          <p><strong>Diagnosis:</strong> {{ patientInfo.diagnosis }}</p>
+        </div>
+      </div>
+      
+      <div class="info-card">
+        <h3>Medications</h3>
+        <ul>
+          {% for med in medicines %}
+            <li>{{ med }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    
+    <div class="vitals">
+      <h3>Real-time Vital Signs</h3>
+      <div class="vital-cards">
+        <div class="vital-card">
+          <h4>Heart Rate</h4>
+          <p id="heartRate">--</p>
+          <span>bpm</span>
+        </div>
+        <div class="vital-card">
+          <h4>SpO2</h4>
+          <p id="spo2">--</p>
+          <span>%</span>
+        </div>
+        <div class="vital-card">
+          <h4>Temperature</h4>
+          <p id="temperature">--</p>
+          <span>°C</span>
+        </div>
+      </div>
+      
+      <div class="vital-charts">
+        <div class="vital-chart">
+          <h4>Heart Rate Trend</h4>
+          <canvas id="heartRateChart"></canvas>
+        </div>
+        <div class="vital-chart">
+          <h4>SpO2 Trend</h4>
+          <canvas id="spo2Chart"></canvas>
+        </div>
+        <div class="vital-chart">
+          <h4>Temperature Trend</h4>
+          <canvas id="temperatureChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="/js/room.js"></script>
+{% endblock %}

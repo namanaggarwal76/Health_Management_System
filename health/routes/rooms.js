@@ -176,20 +176,6 @@ router.post('/add-patient', express.urlencoded({ extended: true }), (req, res) =
     // Log the action
     addLogEntry('add', name, roomId, `Admitted with ${diagnosis}`);
     
-    // Initialize vitals for this room using the new format (no timestamps, with heartRate)
-    const vitalsPath = path.join(__dirname, '../data/vitals.json');
-    const vitalsData = fs.readFileSync(vitalsPath, 'utf8');
-    const vitals = JSON.parse(vitalsData);
-    
-    if (!vitals[roomId]) {
-      vitals[roomId] = {
-        temp: { "1": 36.7 },
-        spo2: { "1": 98 },
-        heartRate: { "1": 80 }
-      };
-      fs.writeFileSync(vitalsPath, JSON.stringify(vitals, null, 2));
-    }
-    
     res.redirect(`/room/${roomId}`);
   } catch (error) {
     console.error('Error adding patient:', error);
@@ -285,6 +271,15 @@ router.post('/room/:id/discharge', express.urlencoded({ extended: true }), (req,
     writeRooms(rooms);
     writePatients(patients);
     writeVitals(vitals);
+    
+    // Reset stored client password to default "password123"
+    const usersPath = path.join(__dirname, '../data/users.json');
+    let users = {};
+    try {
+      users = JSON.parse(fs.readFileSync(usersPath, 'utf8'));
+    } catch (e) { }
+    users[roomId] = { password: 'password123' };
+    fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
     
     res.redirect('/');
   } catch (error) {

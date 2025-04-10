@@ -7,6 +7,7 @@
 <body>
   <header>
     <h1>Hospital Patient Monitoring</h1>
+    {% if not hideNav %}
     <nav class="main-nav">
       <ul>
         <li><a href="/">Dashboard</a></li>
@@ -14,6 +15,7 @@
         <li><a href="/add-patient" class="button primary small">Add New Patient</a></li>
       </ul>
     </nav>
+    {% endif %}
   </header>
   <main>
     {% block content %}{% endblock %}

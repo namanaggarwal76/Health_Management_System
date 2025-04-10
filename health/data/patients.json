@@ -1,15 +1,54 @@
 {
   "1": {
-    "name": "qwerty",
-    "age": 12,
+    "name": "pranav",
+    "age": 21,
+    "gender": "other",
+    "admissionDate": "2025-04-10",
+    "diagnosis": "12345",
+    "medicines": [
+      "a",
+      "q",
+      "b",
+      "w"
+    ]
+  },
+  "2": {
+    "name": "12345",
+    "age": 89,
     "gender": "male",
     "admissionDate": "2025-04-10",
     "diagnosis": "abc",
     "medicines": [
-      "1",
-      "2",
-      "3",
-      "4"
+      "a",
+      "b",
+      "c"
+    ]
+  },
+  "5": {
+    "name": "aryan",
+    "age": 17,
+    "gender": "female",
+    "admissionDate": "2025-04-10",
+    "diagnosis": "abcd",
+    "medicines": [
+      "q",
+      "w",
+      "e",
+      "r",
+      "t"
+    ]
+  },
+  "6": {
+    "name": "naman",
+    "age": 18,
+    "gender": "male",
+    "admissionDate": "2025-04-10",
+    "diagnosis": "qwerty",
+    "medicines": [
+      "a",
+      "b",
+      "c",
+      "d"
     ]
   }
 }

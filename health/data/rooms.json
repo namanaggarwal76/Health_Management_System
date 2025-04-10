@@ -2,12 +2,12 @@
   {
     "id": 1,
     "status": "occupied",
-    "patient": "qwerty"
+    "patient": "pranav"
   },
   {
     "id": 2,
-    "status": "vacant",
-    "patient": null
+    "status": "occupied",
+    "patient": "12345"
   },
   {
     "id": 3,
@@ -21,13 +21,13 @@
   },
   {
     "id": 5,
-    "status": "vacant",
-    "patient": null
+    "status": "occupied",
+    "patient": "aryan"
   },
   {
     "id": 6,
-    "status": "vacant",
-    "patient": null
+    "status": "occupied",
+    "patient": "naman"
   },
   {
     "id": 7,

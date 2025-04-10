@@ -174,5 +174,61 @@
     "roomId": "3",
     "details": "Patient discharged. Reason: deceased",
     "timestamp": "2025-04-09T19:37:48.286Z"
+  },
+  {
+    "id": 23,
+    "action": "add",
+    "patientName": "abc",
+    "roomId": "4",
+    "details": "Admitted with 123",
+    "timestamp": "2025-04-10T04:00:59.100Z"
+  },
+  {
+    "id": 24,
+    "action": "discharge",
+    "patientName": "abc",
+    "roomId": "4",
+    "details": "Patient discharged. Reason: cured",
+    "timestamp": "2025-04-10T04:02:11.713Z"
+  },
+  {
+    "id": 25,
+    "action": "discharge",
+    "patientName": "qwerty",
+    "roomId": "1",
+    "details": "Patient discharged. Reason: cured",
+    "timestamp": "2025-04-10T06:27:20.545Z"
+  },
+  {
+    "id": 26,
+    "action": "add",
+    "patientName": "12345",
+    "roomId": "2",
+    "details": "Admitted with abc",
+    "timestamp": "2025-04-10T06:28:56.296Z"
+  },
+  {
+    "id": 27,
+    "action": "add",
+    "patientName": "naman",
+    "roomId": "6",
+    "details": "Admitted with qwerty",
+    "timestamp": "2025-04-10T06:31:42.603Z"
+  },
+  {
+    "id": 28,
+    "action": "add",
+    "patientName": "aryan",
+    "roomId": "5",
+    "details": "Admitted with abcd",
+    "timestamp": "2025-04-10T06:32:58.296Z"
+  },
+  {
+    "id": 29,
+    "action": "add",
+    "patientName": "pranav",
+    "roomId": "1",
+    "details": "Admitted with 12345",
+    "timestamp": "2025-04-10T06:36:12.964Z"
   }
 ]

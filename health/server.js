@@ -1,5 +1,6 @@
 const express = require('express');
 const nunjucks = require('nunjucks');
+const path = require('path');
 const app = express();
 
 // Configuration
@@ -29,6 +30,15 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use('/', require('./routes/rooms'));
 app.use('/api', require('./routes/api'));
+app.use('/client', require('./routes/client')); // New client routes
+
+// Serve React build static files
+app.use(express.static(path.join(__dirname, '../client/build')));
+
+// Catch-all route to serve React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

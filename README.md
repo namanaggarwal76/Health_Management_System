@@ -18,27 +18,47 @@ This is an IoT-based hospital monitoring system that tracks patient data, room s
    git clone https://github.com/namanaggarwal76/Health_Management_System.git
    cd health
    ```
-
-2. Install dependencies:
+2. Install server dependencies:
    ```bash
    npm install
    ```
-
-3. Start the server:
+3. Install client dependencies:
    ```bash
+   cd ../client
+   npm install
+   ```
+4. Start the server:
+   ```bash
+   cd ../health
+   npm start
+   ```
+5. In a separate terminal, run the client in development mode:
+   ```bash
+   cd ../client
    npm start
    ```
 
-4. Open your browser and navigate to:
-   ```
-   http://localhost:3000
-   ```
+## Building the Client for Production
+To build the client-side React app and serve it from the Express server:
+```bash
+cd ../client
+npm run build
+```
+Then restart the server.
 
 ## Development
 To start the server in development mode with live reload:
 ```bash
 npm run dev
 ```
+
+## Running the Client
+To run the client-side React app in development mode:
+```bash
+cd client
+npm start
+```
+This will start the client app with live reloading.
 
 ## Vital Signs Simulation
 To simulate real-time vital signs for testing:
