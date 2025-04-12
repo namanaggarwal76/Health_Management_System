@@ -66,6 +66,20 @@ router.post('/room/:id', express.json(), (req, res) => {
     rotateVitalsData(vitals[roomId], newVitalsData);
     
     fs.writeFileSync(vitalsPath, JSON.stringify(vitals, null, 2));
+
+    // Helper to determine if the new vitals are abnormal  
+    function isAbnormal(data) {
+      return (
+        data.heartRate < 60 || data.heartRate > 100 ||
+        data.spo2 < 95 ||
+        data.temperature > 37.5
+      );
+    }
+    
+    if (isAbnormal(newVitalsData)) {
+      const alerts = require('../alerts');
+      alerts.sendAlert(`Abnormal vitals in room ${roomId}: HeartRate: ${newVitalsData.heartRate}, SpO2: ${newVitalsData.spo2}, Temperature: ${newVitalsData.temperature}`);
+    }
     
     res.json({ success: true });
   } catch (error) {

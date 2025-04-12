@@ -27,6 +27,30 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Explicit route for nurse station dashboard
+app.get('/nurse-station', (req, res) => {
+  res.render('index.njk');
+});
+
+// New route for notifications page
+app.get('/notifications', (req, res) => {
+  const fs = require('fs');
+  const path = require('path');
+  
+  // Load notifications from a JSON file or create an empty array if file doesn't exist
+  let notifications = [];
+  try {
+    const notificationsPath = path.join(__dirname, 'data/notifications.json');
+    if (fs.existsSync(notificationsPath)) {
+      notifications = JSON.parse(fs.readFileSync(notificationsPath, 'utf8'));
+    }
+  } catch (error) {
+    console.error('Error loading notifications:', error);
+  }
+  
+  res.render('notifications.njk', { notifications });
+});
+
 // Routes
 app.use('/', require('./routes/rooms'));
 app.use('/api', require('./routes/api'));
@@ -40,7 +64,13 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 
-app.listen(PORT, () => {
+// Create HTTP server and initialize alerts (Socket.IO)
+const http = require('http');
+const server = http.createServer(app);
+const alerts = require('./alerts');
+
+server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  console.log(`Open http://localhost:${PORT} in your browser`);
+  console.log(`Nurse Station Dashboard available at http://localhost:${PORT}/nurse-station`);
 });
+alerts.init(server);

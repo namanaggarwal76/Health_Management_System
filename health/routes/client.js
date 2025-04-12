@@ -64,6 +64,14 @@ router.post('/change-password', express.urlencoded({ extended: true }), (req, re
   res.redirect(`/client/room/${room_no}`);
 });
 
+// New route: Patient calls nurse
+router.post('/nurse-alert', express.json(), (req, res) => {
+  const { room_no } = req.body;
+  const alerts = require('../alerts');
+  alerts.sendAlert(`Patient in room ${room_no} is calling for nurse`);
+  res.json({ success: true });
+});
+
 // GET client room view (without edit/discharge options)
 router.get('/room/:id', (req, res) => {
   const roomId = req.params.id;

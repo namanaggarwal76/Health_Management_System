@@ -12,32 +12,6 @@
       "w"
     ]
   },
-  "2": {
-    "name": "12345",
-    "age": 89,
-    "gender": "male",
-    "admissionDate": "2025-04-10",
-    "diagnosis": "abc",
-    "medicines": [
-      "a",
-      "b",
-      "c"
-    ]
-  },
-  "5": {
-    "name": "aryan",
-    "age": 17,
-    "gender": "female",
-    "admissionDate": "2025-04-10",
-    "diagnosis": "abcd",
-    "medicines": [
-      "q",
-      "w",
-      "e",
-      "r",
-      "t"
-    ]
-  },
   "6": {
     "name": "naman",
     "age": 18,

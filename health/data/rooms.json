@@ -6,8 +6,8 @@
   },
   {
     "id": 2,
-    "status": "occupied",
-    "patient": "12345"
+    "status": "vacant",
+    "patient": null
   },
   {
     "id": 3,
@@ -21,8 +21,8 @@
   },
   {
     "id": 5,
-    "status": "occupied",
-    "patient": "aryan"
+    "status": "vacant",
+    "patient": null
   },
   {
     "id": 6,
